@@ -129,6 +129,35 @@ curl -X POST http://127.0.0.1:8000/clone_vm \
  -H "Content-Type: application/json" \
  -d '{"source_vm_id": 100000, "cpu": 8, "ram": 8096, "disk_type": "sata0", "disk_size": "50G", "start_vm": true}'
 Delete a VM
+s present on the proximox
+curl -X GET "http://127.0.0.1:8000/list_vms"
+Detailed information on a VM
+curl -X GET "http://127.0.0.1:8000/list_vms?vmid=100"
+Update a VM
+Each parameter is optional for modifications
+curl -X POST -H "Content-Type: application/json" -d '{
+ "vm_id": 101,
+ "cpu": 1,
+ "ram": 512
+}' http://127.0.0.1:8000/update_vm_config
+
+# Change only disk type and disk size
+curl -X POST -H "Content-Type: application/json" -d '{
+ "vm_id": 101,
+ "disk_type": "sata0",
+ "disk_size": "+200G"
+}' http://127.0.0.1:8000/update_vm_config
+TO REVIEW
+# Clone a full param VM
+curl -X POST http://127.0.0.1:8000/clone_vm \
+ -H "Content-Type: application/json" \
+ -d '{"source_vm_id": 100000, "new_vm_id": 101, "new_vm_name": "VMTESTFASTAPI", "cpu": 8, "ram": 8096, "disk_type": "sata0", "disk_size": "50G ", "bridge": "vmbr0", "ipv4": "192.168.1.10/24", "gw": "192.168.1.1", "ipv6": "fd00::10/64", "gw6": " 2001:db8::1", "start_vm": false, "application": "nginx"}'
+# Change only IPv4 and IPv6 IP addresses
+curl -X POST -H "Content-Type: application/json" -d '{
+ "vm_id": 19075,
+ "ipv4": "NEW_IP_IPV4",
+ "ipv6": "NEW_IP_IPV6"
+}' http://127.0.0.1:8000/update_vm_config
 curl -X DELETE http://127.0.0.1:8000/delete_vm/IDVM
 Check the status of a task
 curl -X GET http://127.0.0.1:8000/check_status?task_id=<task_id>
